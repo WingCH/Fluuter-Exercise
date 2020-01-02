@@ -23,13 +23,13 @@ class StreamDemoState extends State<StreamDemo> {
                 style: TextStyle(
                   fontSize: 60,
                   fontWeight: FontWeight.bold,
-                  color: Colors.indigoAccent
+                  color: Colors.teal
                 ),
               ),
               IconButton(
                 iconSize: 60,
                 onPressed: () {},
-                icon: Icon(Icons.play_circle_outline, color: Colors.indigoAccent,),
+                icon: Icon(Icons.play_circle_outline, color: Colors.teal,),
               )
             ],
           ),
