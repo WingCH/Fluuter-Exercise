@@ -7,31 +7,60 @@ class StreamDemo extends StatefulWidget {
 
 class StreamDemoState extends State<StreamDemo> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(StreamDemo oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Stream'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+//        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Stream',
-                style: TextStyle(
-                  fontSize: 60,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.teal
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Stream',
+                  style: TextStyle(
+                      fontSize: 60,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.teal),
                 ),
-              ),
-              IconButton(
-                iconSize: 60,
-                onPressed: () {},
-                icon: Icon(Icons.play_circle_outline, color: Colors.teal,),
-              )
-            ],
+                IconButton(
+                  iconSize: 60,
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.play_circle_outline,
+                    color: Colors.teal,
+                  ),
+                )
+              ],
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(10),
@@ -138,29 +167,5 @@ class StreamDemoState extends State<StreamDemo> {
         ],
       ),
     );
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  @override
-  void didUpdateWidget(StreamDemo oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
   }
 }
