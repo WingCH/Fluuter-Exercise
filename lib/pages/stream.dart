@@ -8,12 +8,13 @@ class StreamDemo extends StatefulWidget {
 }
 
 class StreamDemoState extends State<StreamDemo> {
-  StreamController _streamController;
   Stream<int> timerStream;
   StreamSubscription<int> streamSubscription1;
   StreamSubscription<int> streamSubscription2;
   StreamSubscription<int> streamSubscription3;
-  int time = 0;
+  int time_1 = 0;
+  int time_2 = 0;
+  int time_3 = 0;
 
   @override
   void initState() {
@@ -23,14 +24,21 @@ class StreamDemoState extends State<StreamDemo> {
     Duration interval = Duration(seconds: 1);
     timerStream = Stream.periodic(interval, (data) {
       return data;
+    }).asBroadcastStream();
+
+    streamSubscription1 = timerStream.listen((int data) {
+      setState(() {
+        time_1 = data;
+      });
     });
-
-    _streamController = StreamController.broadcast();
-//    _streamController.addStream(timerStream);
-
+    streamSubscription2 = timerStream.listen((int data) {
+      setState(() {
+        time_2 = data;
+      });
+    });
     streamSubscription3 = timerStream.listen((int data) {
       setState(() {
-        time = data;
+        time_3 = data;
       });
     });
 //    streamSubscription1 = timerStream.listen(onData)
@@ -40,7 +48,6 @@ class StreamDemoState extends State<StreamDemo> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _streamController.close();
   }
 
   @override
@@ -62,7 +69,6 @@ class StreamDemoState extends State<StreamDemo> {
         title: Text('Stream'),
       ),
       body: Column(
-//        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 30),
@@ -92,7 +98,7 @@ class StreamDemoState extends State<StreamDemo> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    "00",
+                    time_1.toString(),
                     style: TextStyle(
                         color: Colors.blueGrey,
                         fontWeight: FontWeight.bold,
@@ -105,20 +111,27 @@ class StreamDemoState extends State<StreamDemo> {
                         onPressed: () {
                           //listen / resume
                         },
-                        child: Text('listen'),
+                        child: Text('Listen'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: OutlineButton(
                           onPressed: () {
                             //Pause
+                            if (!streamSubscription1.isPaused) {
+                              streamSubscription1.pause();
+                            }
                           },
                           child: Text('Paused'),
                         ),
                       ),
                       OutlineButton(
-                        onPressed: null,
-                        child: Text('--'),
+                        onPressed: () {
+                          if (streamSubscription1.isPaused) {
+                            streamSubscription1.resume();
+                          }
+                        },
+                        child: Text('Resume'),
                       ),
                     ],
                   )
@@ -129,7 +142,7 @@ class StreamDemoState extends State<StreamDemo> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    "00",
+                    time_2.toString(),
                     style: TextStyle(
                         color: Colors.amber,
                         fontWeight: FontWeight.bold,
@@ -139,21 +152,27 @@ class StreamDemoState extends State<StreamDemo> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       OutlineButton(
-                        onPressed: null,
-                        child: Text('listen'),
+                        onPressed: () {},
+                        child: Text('Listen'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: OutlineButton(
                           onPressed: () {
-                            _streamController.sink.add(2);
+                            if (!streamSubscription2.isPaused) {
+                              streamSubscription2.pause();
+                            }
                           },
                           child: Text('Paused'),
                         ),
                       ),
                       OutlineButton(
-                        onPressed: null,
-                        child: Text('---'),
+                        onPressed: () {
+                          if (streamSubscription2.isPaused) {
+                            streamSubscription2.resume();
+                          }
+                        },
+                        child: Text('Resume'),
                       ),
                     ],
                   )
@@ -164,7 +183,7 @@ class StreamDemoState extends State<StreamDemo> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    time.toString(),
+                    time_3.toString(),
                     style: TextStyle(
                         color: Colors.deepOrange,
                         fontWeight: FontWeight.bold,
@@ -177,20 +196,26 @@ class StreamDemoState extends State<StreamDemo> {
                         onPressed: () {
                           streamSubscription3.resume();
                         },
-                        child: Text('listen'),
+                        child: Text('Listen'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: OutlineButton(
                           onPressed: () {
-                            streamSubscription3.pause();
+                            if (!streamSubscription3.isPaused) {
+                              streamSubscription3.pause();
+                            }
                           },
                           child: Text('Paused'),
                         ),
                       ),
                       OutlineButton(
-                        onPressed: null,
-                        child: Text('---'),
+                        onPressed: () {
+                          if (streamSubscription3.isPaused) {
+                            streamSubscription3.resume();
+                          }
+                        },
+                        child: Text('Resume'),
                       ),
                     ],
                   )
