@@ -25,23 +25,6 @@ class StreamDemoState extends State<StreamDemo> {
     timerStream = Stream.periodic(interval, (data) {
       return data;
     }).asBroadcastStream();
-
-    streamSubscription1 = timerStream.listen((int data) {
-      setState(() {
-        time_1 = data;
-      });
-    });
-    streamSubscription2 = timerStream.listen((int data) {
-      setState(() {
-        time_2 = data;
-      });
-    });
-    streamSubscription3 = timerStream.listen((int data) {
-      setState(() {
-        time_3 = data;
-      });
-    });
-//    streamSubscription1 = timerStream.listen(onData)
   }
 
   @override
@@ -75,21 +58,18 @@ class StreamDemoState extends State<StreamDemo> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'Stream',
-                  style: TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.teal),
-                ),
-                IconButton(
-                  iconSize: 60,
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.play_circle_outline,
-                    color: Colors.teal,
-                  ),
-                )
+                Container(
+                    width: 300,
+                    child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: SizedBox(
+                            child: Text(
+                          'StreamSubscription Demo',
+                          style: TextStyle(
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.teal),
+                        )))),
               ],
             ),
           ),
@@ -109,7 +89,11 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          //listen / resume
+                          streamSubscription1 = timerStream.listen((int data) {
+                            setState(() {
+                              time_1 = data;
+                            });
+                          });
                         },
                         child: Text('Listen'),
                       ),
@@ -152,7 +136,13 @@ class StreamDemoState extends State<StreamDemo> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       OutlineButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          streamSubscription2 = timerStream.listen((int data) {
+                            setState(() {
+                              time_2 = data;
+                            });
+                          });
+                        },
                         child: Text('Listen'),
                       ),
                       Padding(
@@ -194,7 +184,11 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          streamSubscription3.resume();
+                          streamSubscription3 = timerStream.listen((int data) {
+                            setState(() {
+                              time_3 = data;
+                            });
+                          });
                         },
                         child: Text('Listen'),
                       ),
