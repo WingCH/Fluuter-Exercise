@@ -17,13 +17,12 @@ class StreamDemoState extends State<StreamDemo> {
     super.initState();
 
     Duration interval = Duration(seconds: 1);
-    timerStream= Stream.periodic(interval, (data) {
+    timerStream = Stream.periodic(interval, (data) {
       return data;
     });
 
     _streamController = StreamController.broadcast();
     _streamController.addStream(timerStream);
-
 
 //    StreamSubscription subscription =
 //    _streamController.stream.listen((data) => print("$data"));
@@ -125,86 +124,94 @@ class StreamDemoState extends State<StreamDemo> {
                   }
                 }),
           ),
-          StreamBuilder<Object>(
-            stream: _streamController.stream,
-            builder: (context, snapshot) {
-              return Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      snapshot.data.toString(),
-                      style: TextStyle(
-                          color: Colors.amber,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 80),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: StreamBuilder<Object>(
+                stream: _streamController.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
                       children: <Widget>[
-                        OutlineButton(
-                          onPressed: null,
-                          child: Text('listen'),
+                        Text(
+                          snapshot.data.toString(),
+                          style: TextStyle(
+                              color: Colors.amber,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 80),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: OutlineButton(
-                            onPressed: (){
-                              _streamController.sink.add(2);
-                            },
-                            child: Text('Try add'),
-                          ),
-                        ),
-                        OutlineButton(
-                          onPressed: null,
-                          child: Text('listen'),
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            OutlineButton(
+                              onPressed: null,
+                              child: Text('listen'),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: OutlineButton(
+                                onPressed: () {
+                                  _streamController.sink.add(2);
+                                },
+                                child: Text('Try add'),
+                              ),
+                            ),
+                            OutlineButton(
+                              onPressed: null,
+                              child: Text('listen'),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
-              );
-            }
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                }),
           ),
-          StreamBuilder<Object>(
-            stream: _streamController.stream,
-            builder: (context, snapshot) {
-              return Padding(
-                padding: EdgeInsets.all(10),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      snapshot.data.toString(),
-                      style: TextStyle(
-                          color: Colors.deepOrange,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 80),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: StreamBuilder<Object>(
+                stream: _streamController.stream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(
                       children: <Widget>[
-                        OutlineButton(
-                          onPressed: null,
-                          child: Text('listen'),
+                        Text(
+                          snapshot.data.toString(),
+                          style: TextStyle(
+                              color: Colors.deepOrange,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 80),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: OutlineButton(
-                            onPressed: null,
-                            child: Text('listen'),
-                          ),
-                        ),
-                        OutlineButton(
-                          onPressed: null,
-                          child: Text('listen'),
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            OutlineButton(
+                              onPressed: null,
+                              child: Text('listen'),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: OutlineButton(
+                                onPressed: null,
+                                child: Text('listen'),
+                              ),
+                            ),
+                            OutlineButton(
+                              onPressed: null,
+                              child: Text('listen'),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
-              );
-            }
-          ),
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                }),
+          )
         ],
       ),
     );
