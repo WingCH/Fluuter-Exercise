@@ -45,6 +45,52 @@ class StreamDemoState extends State<StreamDemo> {
     super.didChangeDependencies();
   }
 
+//  void listenStream(StreamSubscription streamSubscription, String position) {
+//    if (streamSubscription == null) {
+//      setState(() {
+//        streamSubscription = timerStream.listen((int data) {
+//          switch (position) {
+//            case "time_1":
+//              time_1 = data;
+//              break;
+//            case "time_2":
+//              time_2 = data;
+//              break;
+//            case "time_3":
+//              time_3 = data;
+//              break;
+//          }
+//        });
+//      });
+//    } else {
+//      streamSubscription.cancel();
+//    }
+//  }
+
+  void pauseStream(StreamSubscription streamSubscription) {
+    //mark sure streamSubscription already listening stream
+    if (streamSubscription != null) {
+      // pause listen stream if stream is not pausing
+      if (!streamSubscription.isPaused) {
+        setState(() {
+          streamSubscription.pause();
+        });
+      }
+    }
+  }
+
+  void resumeStream(StreamSubscription streamSubscription) {
+    //mark sure streamSubscription already listening stream
+    if (streamSubscription != null) {
+      // resume pause stream if stream is pausing
+      if (streamSubscription.isPaused) {
+        setState(() {
+          streamSubscription.resume();
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,32 +135,34 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          streamSubscription1 = timerStream.listen((int data) {
-                            setState(() {
-                              time_1 = data;
+                          if (streamSubscription1 == null) {
+                            streamSubscription1 =
+                                timerStream.listen((int data) {
+                              setState(() {
+                                time_1 = data;
+                              });
                             });
-                          });
+                          } else {
+                            streamSubscription1.cancel();
+                          }
                         },
                         child: Text('Listen'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: OutlineButton(
-                          onPressed: () {
-                            //Pause
-                            if (!streamSubscription1.isPaused) {
-                              streamSubscription1.pause();
-                            }
-                          },
+                          onPressed: streamSubscription1 != null &&
+                                  !streamSubscription1.isPaused
+                              ? () => pauseStream(streamSubscription1)
+                              : null,
                           child: Text('Paused'),
                         ),
                       ),
                       OutlineButton(
-                        onPressed: () {
-                          if (streamSubscription1.isPaused) {
-                            streamSubscription1.resume();
-                          }
-                        },
+                        onPressed: streamSubscription1 != null &&
+                                streamSubscription1.isPaused
+                            ? () => resumeStream(streamSubscription1)
+                            : null,
                         child: Text('Resume'),
                       ),
                     ],
@@ -137,31 +185,32 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          streamSubscription2 = timerStream.listen((int data) {
-                            setState(() {
-                              time_2 = data;
+                          if (streamSubscription2 == null) {
+                            streamSubscription2 =
+                                timerStream.listen((int data) {
+                              setState(() {
+                                time_2 = data;
+                              });
                             });
-                          });
+                          }
                         },
                         child: Text('Listen'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: OutlineButton(
-                          onPressed: () {
-                            if (!streamSubscription2.isPaused) {
-                              streamSubscription2.pause();
-                            }
-                          },
+                          onPressed: streamSubscription2 != null &&
+                                  !streamSubscription2.isPaused
+                              ? () => pauseStream(streamSubscription2)
+                              : null,
                           child: Text('Paused'),
                         ),
                       ),
                       OutlineButton(
-                        onPressed: () {
-                          if (streamSubscription2.isPaused) {
-                            streamSubscription2.resume();
-                          }
-                        },
+                        onPressed: streamSubscription2 != null &&
+                                streamSubscription2.isPaused
+                            ? () => resumeStream(streamSubscription2)
+                            : null,
                         child: Text('Resume'),
                       ),
                     ],
@@ -184,31 +233,32 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          streamSubscription3 = timerStream.listen((int data) {
-                            setState(() {
-                              time_3 = data;
+                          if (streamSubscription3 == null) {
+                            streamSubscription3 =
+                                timerStream.listen((int data) {
+                              setState(() {
+                                time_3 = data;
+                              });
                             });
-                          });
+                          }
                         },
                         child: Text('Listen'),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: OutlineButton(
-                          onPressed: () {
-                            if (!streamSubscription3.isPaused) {
-                              streamSubscription3.pause();
-                            }
-                          },
+                          onPressed: streamSubscription3 != null &&
+                                  !streamSubscription3.isPaused
+                              ? () => pauseStream(streamSubscription3)
+                              : null,
                           child: Text('Paused'),
                         ),
                       ),
                       OutlineButton(
-                        onPressed: () {
-                          if (streamSubscription3.isPaused) {
-                            streamSubscription3.resume();
-                          }
-                        },
+                        onPressed: streamSubscription3 != null &&
+                                streamSubscription3.isPaused
+                            ? () => resumeStream(streamSubscription3)
+                            : null,
                         child: Text('Resume'),
                       ),
                     ],
