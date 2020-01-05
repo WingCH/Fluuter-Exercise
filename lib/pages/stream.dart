@@ -10,6 +10,10 @@ class StreamDemo extends StatefulWidget {
 class StreamDemoState extends State<StreamDemo> {
   StreamController _streamController;
   Stream<int> timerStream;
+  StreamSubscription<int> streamSubscription1;
+  StreamSubscription<int> streamSubscription2;
+  StreamSubscription<int> streamSubscription3;
+  int time = 0;
 
   @override
   void initState() {
@@ -22,10 +26,14 @@ class StreamDemoState extends State<StreamDemo> {
     });
 
     _streamController = StreamController.broadcast();
-    _streamController.addStream(timerStream);
+//    _streamController.addStream(timerStream);
 
-//    StreamSubscription subscription =
-//    _streamController.stream.listen((data) => print("$data"));
+    streamSubscription3 = timerStream.listen((int data) {
+      setState(() {
+        time = data;
+      });
+    });
+//    streamSubscription1 = timerStream.listen(onData)
   }
 
   @override
@@ -80,138 +88,114 @@ class StreamDemoState extends State<StreamDemo> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(10),
-            child: StreamBuilder<Object>(
-                stream: _streamController.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: <Widget>[
-                        Text(
-                          snapshot.data.toString(),
-                          style: TextStyle(
-                              color: Colors.blueGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 80),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "00",
+                    style: TextStyle(
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 80),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      OutlineButton(
+                        onPressed: () {
+                          //listen / resume
+                        },
+                        child: Text('listen'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: OutlineButton(
+                          onPressed: () {
+                            //Pause
+                          },
+                          child: Text('Paused'),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            OutlineButton(
-                              onPressed: null,
-                              child: Text('listen'),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: OutlineButton(
-                                onPressed: () {
-//                                  _streamController.onPause();
-                                },
-                                child: Text('Paused'),
-                              ),
-                            ),
-                            OutlineButton(
-                              onPressed: null,
-                              child: Text('listen'),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  } else {
-                    return Text('no Date');
-                  }
-                }),
-          ),
+                      ),
+                      OutlineButton(
+                        onPressed: null,
+                        child: Text('--'),
+                      ),
+                    ],
+                  )
+                ],
+              )),
           Padding(
-            padding: EdgeInsets.all(10),
-            child: StreamBuilder<Object>(
-                stream: _streamController.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: <Widget>[
-                        Text(
-                          snapshot.data.toString(),
-                          style: TextStyle(
-                              color: Colors.amber,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 80),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "00",
+                    style: TextStyle(
+                        color: Colors.amber,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 80),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      OutlineButton(
+                        onPressed: null,
+                        child: Text('listen'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: OutlineButton(
+                          onPressed: () {
+                            _streamController.sink.add(2);
+                          },
+                          child: Text('Paused'),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            OutlineButton(
-                              onPressed: null,
-                              child: Text('listen'),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: OutlineButton(
-                                onPressed: () {
-                                  _streamController.sink.add(2);
-                                },
-                                child: Text('Try add'),
-                              ),
-                            ),
-                            OutlineButton(
-                              onPressed: null,
-                              child: Text('listen'),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                }),
-          ),
+                      ),
+                      OutlineButton(
+                        onPressed: null,
+                        child: Text('---'),
+                      ),
+                    ],
+                  )
+                ],
+              )),
           Padding(
-            padding: EdgeInsets.all(10),
-            child: StreamBuilder<Object>(
-                stream: _streamController.stream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return Column(
-                      children: <Widget>[
-                        Text(
-                          snapshot.data.toString(),
-                          style: TextStyle(
-                              color: Colors.deepOrange,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 80),
+              padding: EdgeInsets.all(10),
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    time.toString(),
+                    style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 80),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      OutlineButton(
+                        onPressed: () {
+                          streamSubscription3.resume();
+                        },
+                        child: Text('listen'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: OutlineButton(
+                          onPressed: () {
+                            streamSubscription3.pause();
+                          },
+                          child: Text('Paused'),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            OutlineButton(
-                              onPressed: null,
-                              child: Text('listen'),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: OutlineButton(
-                                onPressed: null,
-                                child: Text('listen'),
-                              ),
-                            ),
-                            OutlineButton(
-                              onPressed: null,
-                              child: Text('listen'),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  } else {
-                    return CircularProgressIndicator();
-                  }
-                }),
-          )
+                      ),
+                      OutlineButton(
+                        onPressed: null,
+                        child: Text('---'),
+                      ),
+                    ],
+                  )
+                ],
+              ))
         ],
       ),
     );
