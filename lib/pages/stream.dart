@@ -29,8 +29,13 @@ class StreamDemoState extends State<StreamDemo> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    //TODO: The method 'cancel' was called on null.
     super.dispose();
+    timerStream = null;
+//    streamSubscription1.cancel();
+//    streamSubscription2.cancel();
+//    streamSubscription3.cancel();
+
   }
 
   @override
@@ -44,28 +49,6 @@ class StreamDemoState extends State<StreamDemo> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
-
-//  void listenStream(StreamSubscription streamSubscription, String position) {
-//    if (streamSubscription == null) {
-//      setState(() {
-//        streamSubscription = timerStream.listen((int data) {
-//          switch (position) {
-//            case "time_1":
-//              time_1 = data;
-//              break;
-//            case "time_2":
-//              time_2 = data;
-//              break;
-//            case "time_3":
-//              time_3 = data;
-//              break;
-//          }
-//        });
-//      });
-//    } else {
-//      streamSubscription.cancel();
-//    }
-//  }
 
   void pauseStream(StreamSubscription streamSubscription) {
     //mark sure streamSubscription already listening stream
@@ -135,16 +118,12 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          if (streamSubscription1 == null) {
                             streamSubscription1 =
                                 timerStream.listen((int data) {
                               setState(() {
                                 time_1 = data;
                               });
                             });
-                          } else {
-                            streamSubscription1.cancel();
-                          }
                         },
                         child: Text('Listen'),
                       ),
