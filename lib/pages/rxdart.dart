@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 
 class RxDartDemo extends StatefulWidget {
   @override
@@ -6,16 +7,38 @@ class RxDartDemo extends StatefulWidget {
 }
 
 class RxDartDemoState extends State<RxDartDemo> {
+  PublishSubject<int> publishSubject;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    Duration interval = Duration(seconds: 1);
+    Stream<int> timerStream = Stream.periodic(interval, (data) {
+      return data;
+    });
+
+    //same as StreamController.broadcast();
+    publishSubject = PublishSubject<int>();
+    publishSubject.addStream(timerStream);
+
+    publishSubject.stream.listen((data) {
+      print(data);
+    });
+    publishSubject.stream.listen((data) {
+      print(data);
+    });
+    publishSubject.stream.listen((data) {
+      print(data);
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+//    publishSubject?.close();
   }
 
   @override
