@@ -13,9 +13,17 @@ class MainPage extends StatelessWidget {
             onTap: () {
               Navigator.pushNamed(context, '/stream');
             },
-            title: Text('Stream'),
+            title: Text('Timer (Baisc Stream)'),
             trailing: Icon(Icons.navigate_next),
           ),
+          ListTile(
+            onTap: () {
+              Navigator.pushNamed(context, '/rxdart');
+            },
+            title: Text('Timer (Rxdart)'),
+            trailing: Icon(Icons.navigate_next),
+          ),
+
           ListTile(
             onTap: () {},
             title: Text('BottomBar'),

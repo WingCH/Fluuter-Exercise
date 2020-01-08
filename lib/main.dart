@@ -1,4 +1,5 @@
 import 'package:demo/pages/main.dart';
+import 'package:demo/pages/rxdart.dart';
 import 'package:demo/pages/stream.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MainPage(),
+        '/rxdart': (context) => RxDartDemo(),
         '/stream': (context) => StreamDemo(),
       },
     );
