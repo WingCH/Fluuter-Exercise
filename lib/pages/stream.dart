@@ -8,34 +8,46 @@ class StreamDemo extends StatefulWidget {
 }
 
 class StreamDemoState extends State<StreamDemo> {
-  Stream<int> timerStream;
+  StreamController<int> streamController;
   StreamSubscription<int> streamSubscription1;
   StreamSubscription<int> streamSubscription2;
   StreamSubscription<int> streamSubscription3;
+
   int time_1 = 0;
   int time_2 = 0;
   int time_3 = 0;
+
+  bool isDisposed = false;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('initState');
 
     Duration interval = Duration(seconds: 1);
-    timerStream = Stream.periodic(interval, (data) {
+
+    Stream<int> timerStream = Stream.periodic(interval, (data) {
       return data;
-    }).asBroadcastStream();
+    }).takeWhile((_) => !isDisposed);
+
+    streamController = StreamController.broadcast();
+    streamController.addStream(timerStream, cancelOnError: true);
   }
 
   @override
   void dispose() {
-    //TODO: The method 'cancel' was called on null.
+    print('dispose');
+    print(streamSubscription1.toString());
+    streamSubscription1?.cancel();
+    streamSubscription2?.cancel();
+    streamSubscription3?.cancel();
+    isDisposed = true;
     super.dispose();
-    timerStream = null;
+
 //    streamSubscription1.cancel();
 //    streamSubscription2.cancel();
 //    streamSubscription3.cancel();
-
   }
 
   @override
@@ -118,12 +130,12 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                            streamSubscription1 =
-                                timerStream.listen((int data) {
-                              setState(() {
-                                time_1 = data;
-                              });
+                          streamSubscription1 =
+                              streamController.stream.listen((data) {
+                            setState(() {
+                              time_1 = data;
                             });
+                          });
                         },
                         child: Text('Listen'),
                       ),
@@ -164,14 +176,12 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          if (streamSubscription2 == null) {
-                            streamSubscription2 =
-                                timerStream.listen((int data) {
-                              setState(() {
-                                time_2 = data;
-                              });
+                          streamSubscription2 =
+                              streamController.stream.listen((data) {
+                            setState(() {
+                              time_2 = data;
                             });
-                          }
+                          });
                         },
                         child: Text('Listen'),
                       ),
@@ -212,14 +222,12 @@ class StreamDemoState extends State<StreamDemo> {
                     children: <Widget>[
                       OutlineButton(
                         onPressed: () {
-                          if (streamSubscription3 == null) {
-                            streamSubscription3 =
-                                timerStream.listen((int data) {
-                              setState(() {
-                                time_3 = data;
-                              });
+                          streamSubscription3 =
+                              streamController.stream.listen((data) {
+                            setState(() {
+                              time_3 = data;
                             });
-                          }
+                          });
                         },
                         child: Text('Listen'),
                       ),
